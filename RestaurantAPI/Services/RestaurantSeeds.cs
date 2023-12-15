@@ -47,13 +47,13 @@ namespace RestaurantAPI.Services
                         {
                             Name = "Kebab w bułce",
                             Description = "mięso, sałata, sos, bułka",
-                            Pricec = (decimal)25.99,
+                            Price = (decimal)25.99,
                         },
                         new Dish
                         {
                             Name = "Kebab w picie",
                             Description = "mięso, sałata, sos, pita",
-                            Pricec = (decimal)30.99,
+                            Price = (decimal)30.99,
                         }
                     }
                 },
@@ -77,13 +77,13 @@ namespace RestaurantAPI.Services
                         {
                             Name = "Futomaki Kanon",
                             Description = "łosoś, paluszek krabowy, ogórek, kampyo, oshinko",
-                            Pricec = (decimal)30.99,
+                            Price = (decimal)30.99,
                         },
                         new Dish
                         {
                             Name = "Chicken Panko",
                             Description = "kurczak teriyaki w panko, rukola, awokado, ogórek, szczypiorek",
-                            Pricec = (decimal)50.99,
+                            Price = (decimal)50.99,
                         }
                     }
                 },
