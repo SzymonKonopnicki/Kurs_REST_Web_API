@@ -10,8 +10,16 @@ namespace RestaurantAPI.Models.Dtos
             CreateMap<Restaurant, RestaurantDto>()
                 .ForMember(x => x.City, y => y.MapFrom(z => z.Address.City))
                 .ForMember(x => x.Street, y => y.MapFrom(z => z.Address.Street))
-                .ForMember(x => x.PostalCode, y => y.MapFrom(z => z.Address.PostalCode))
-                .ReverseMap();
+                .ForMember(x => x.PostalCode, y => y.MapFrom(z => z.Address.PostalCode));
+
+            CreateMap<RestaurantCreateDto, Restaurant>()
+                .ForMember(x => x.Address, y => y.MapFrom(z => new Address 
+                { 
+                    City = z.City, 
+                    Street = z.Street, 
+                    PostalCode = z.PostalCode
+                }));
+
 
             CreateMap<Dish, DishDto>();
         }

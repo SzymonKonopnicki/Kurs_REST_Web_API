@@ -36,7 +36,7 @@ namespace RestaurantAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<RestaurantDto> GetRestaurantById(int id)
+        public ActionResult<RestaurantDto> GetRestaurantById([FromRoute] int id)
         {
             var restaurant = _dbContext.Restaurants
                 .Include(x => x.Dish)
@@ -53,5 +53,16 @@ namespace RestaurantAPI.Controllers
             return Ok(resyaurantDto);
         }
 
+        [HttpPost]
+        public ActionResult<IEnumerable<RestaurantDto>> CreateRestaurants([FromBody] RestaurantCreateDto restaurantCreateDto)
+        {
+            var restaurant = _mapper.Map<Restaurant>(restaurantCreateDto);
+
+            _dbContext.AddRange(restaurant);
+            _dbContext.SaveChanges();
+
+            return Created($"api/Restaurant/{restaurant.Id}", null);
+
+        }
     }
 }
