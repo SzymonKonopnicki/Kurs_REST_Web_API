@@ -59,5 +59,16 @@ namespace RestaurantAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult UpdateRestaurant([FromRoute] int id, [FromBody] RestaurantUpdateDto updateRestaurantDto)
+        {
+            bool isFound = _restaurantServices.Update(id, updateRestaurantDto);
+            if (!isFound)
+                return NotFound();
+
+            return Ok();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Models.Dtos;
@@ -58,6 +59,21 @@ namespace RestaurantAPI.Services
                 return false;
 
             _dbContext.Restaurants.Remove(restaurant);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool Update(int id, RestaurantUpdateDto updateRestaurantDto)
+        {
+            var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Id == id);
+
+            if (restaurant is null)
+                return false;
+
+            restaurant.Name = updateRestaurantDto.Name;
+            restaurant.Description = updateRestaurantDto.Description;
+            restaurant.HasDelivery = updateRestaurantDto.HasDelivery;
+
             _dbContext.SaveChanges();
             return true;
         }
