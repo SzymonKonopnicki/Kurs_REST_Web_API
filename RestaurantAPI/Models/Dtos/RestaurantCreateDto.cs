@@ -1,7 +1,11 @@
-﻿namespace RestaurantAPI.Models.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RestaurantAPI.Models.Dtos
 {
     public class RestaurantCreateDto
     {
+        [Required]
+        [MaxLength(25)]
         public string Name { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
