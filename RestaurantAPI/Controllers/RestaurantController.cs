@@ -64,5 +64,15 @@ namespace RestaurantAPI.Controllers
             return Created($"api/Restaurant/{restaurant.Id}", null);
 
         }
+
+        [HttpDelete]
+        public ActionResult DeleteRestaurant([FromBody] string name)
+        {
+            var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Name == name);
+            _dbContext.Restaurants.Remove(restaurant);
+            _dbContext.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
