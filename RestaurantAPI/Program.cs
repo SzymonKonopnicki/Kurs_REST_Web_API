@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using RestaurantAPI.Entities;
+using RestaurantAPI.Interfaces;
 using RestaurantAPI.Models.Dtos;
 using RestaurantAPI.Services;
 
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantDbContext>();
 builder.Services.AddScoped<RestaurantSeeds>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IRestaurantServices, RestaurantServices>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
