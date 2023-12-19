@@ -15,17 +15,19 @@ namespace RestaurantAPI.Controllers
     public class RestaurantController : ControllerBase
     {
         private IRestaurantServices _restaurantServices;
-
-        public RestaurantController(IRestaurantServices restaurantServices)
+        private ILogger _logger;
+        public RestaurantController(IRestaurantServices restaurantServices, ILogger<RestaurantController> logger)
         {
             _restaurantServices = restaurantServices;
+            _logger = logger;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<RestaurantDto>> GetAllRestaurants()
         {
-
             var restaurantsDto = _restaurantServices.GetAll();
+
+            _logger.LogInformation("Sending list of restaurations");
 
             return Ok(restaurantsDto);
         }
@@ -39,6 +41,8 @@ namespace RestaurantAPI.Controllers
             if (restaurantDto is null)
                 return NotFound();
 
+            _logger.LogInformation($"Sending restauration with Id:{id}");
+
             return Ok(restaurantDto);
         }
 
@@ -47,8 +51,8 @@ namespace RestaurantAPI.Controllers
         {
             int id = _restaurantServices.Create(restaurantCreateDto);
 
+            _logger.LogInformation($"Create restauration with Id:{id}");
             return Created($"api/Restaurant/{id}", null);
-
         }
 
         [HttpDelete]
@@ -57,6 +61,7 @@ namespace RestaurantAPI.Controllers
             if (!_restaurantServices.Delete(name))
                 return NotFound();
 
+            _logger.LogWarning($"Delete restauration with Name:{name}");
             return NoContent();
         }
 
@@ -68,6 +73,7 @@ namespace RestaurantAPI.Controllers
             if (!isFound)
                 return NotFound();
 
+            _logger.LogWarning($"Update restauration with Id:{id}");
             return Ok();
         }
     }
