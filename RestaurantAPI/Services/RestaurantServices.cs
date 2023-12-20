@@ -54,7 +54,7 @@ namespace RestaurantAPI.Services
             return (restaurant.Id);
         }
 
-        public bool Delete(string name)
+        public void Delete(string name)
         {
             var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Name == name);
 
@@ -63,10 +63,9 @@ namespace RestaurantAPI.Services
 
             _dbContext.Restaurants.Remove(restaurant);
             _dbContext.SaveChanges();
-            return true;
         }
 
-        public bool Update(int id, RestaurantUpdateDto updateRestaurantDto)
+        public void Update(int id, RestaurantUpdateDto updateRestaurantDto)
         {
             var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Id == id);
 
@@ -78,7 +77,6 @@ namespace RestaurantAPI.Services
             restaurant.HasDelivery = updateRestaurantDto.HasDelivery;
 
             _dbContext.SaveChanges();
-            return true;
         }
     }
 
