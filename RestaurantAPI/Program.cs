@@ -4,6 +4,7 @@ using RestaurantAPI.Services;
 using NLog;
 using NLog.Web;
 using RestaurantAPI.Middleware;
+using System.Diagnostics;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -21,6 +22,8 @@ try
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<IRestaurantServices, RestaurantServices>();
     builder.Services.AddScoped<ErrorMiddleware>();
+    builder.Services.AddScoped<RequestTimeMiddleware>();
+    builder.Services.AddScoped<Stopwatch>();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +47,7 @@ try
         app.UseSwaggerUI();
     }
     app.UseMiddleware<ErrorMiddleware>();
+    app.UseMiddleware<RequestTimeMiddleware>();
 
     app.UseHttpsRedirection();
 
