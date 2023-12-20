@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantAPI.Entities;
+using RestaurantAPI.Exceptions;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Models.Dtos;
 
@@ -36,7 +37,8 @@ namespace RestaurantAPI.Services
                 .Include(x => x.Address)
                 .FirstOrDefault(x => x.Id == id);
 
-            if (restaurant is null) return null;
+            if (restaurant is null) 
+                throw new NotFoundException("Not found");
 
             var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
 
@@ -55,8 +57,9 @@ namespace RestaurantAPI.Services
         public bool Delete(string name)
         {
             var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Name == name);
+
             if (restaurant is null)
-                return false;
+                throw new NotFoundException("Not found");
 
             _dbContext.Restaurants.Remove(restaurant);
             _dbContext.SaveChanges();
@@ -68,7 +71,7 @@ namespace RestaurantAPI.Services
             var restaurant = _dbContext.Restaurants.FirstOrDefault(x => x.Id == id);
 
             if (restaurant is null)
-                return false;
+                throw new NotFoundException("Not found");
 
             restaurant.Name = updateRestaurantDto.Name;
             restaurant.Description = updateRestaurantDto.Description;
