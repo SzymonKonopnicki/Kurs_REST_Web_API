@@ -24,6 +24,7 @@ try
     builder.Services.AddScoped<ErrorMiddleware>();
     builder.Services.AddScoped<RequestTimeMiddleware>();
     builder.Services.AddScoped<Stopwatch>();
+    builder.Services.AddScoped<IDishServices, DishServices>();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();

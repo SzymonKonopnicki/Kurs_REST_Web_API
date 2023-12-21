@@ -21,7 +21,10 @@ namespace RestaurantAPI.Models.Dtos
                 }));
 
 
-            CreateMap<Dish, DishDto>();
+            CreateMap<Dish, DishDto>()
+                .ReverseMap();
+
+            CreateMap<DishCreateDto, Dish>();
         }
     }
 }
