@@ -114,7 +114,6 @@ namespace RestaurantAPI.Services
                         }
                     }
                 },
-
             };
 
             return restaurats;

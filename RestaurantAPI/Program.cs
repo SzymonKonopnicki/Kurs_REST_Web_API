@@ -40,7 +40,7 @@ try
 
     var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<RestaurantSeeds>();
-
+    seeder.Seeds();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
