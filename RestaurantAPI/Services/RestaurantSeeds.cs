@@ -14,6 +14,12 @@ namespace RestaurantAPI.Services
         {
             if (_context.Database.CanConnect())
             {
+                if (!_context.Roles.Any())
+                {
+                    var roles = CreateRoles();
+                    _context.Roles.AddRange(roles);
+                    _context.SaveChanges();
+                }
                 if (!_context.Restaurants.Any())
                 {
                     var restaurants = CreateRestaurant();
@@ -21,6 +27,27 @@ namespace RestaurantAPI.Services
                     _context.SaveChanges();
                 }
             }
+        }
+
+        private IEnumerable<Role> CreateRoles()
+        {
+            List<Role> roles = new List<Role>()
+            {
+                new Role()
+                {
+                    Name = "admin",
+                },
+                new Role()
+                {
+                    Name = "manager",
+                },
+                new Role()
+                {
+                    Name = "user",
+                }
+            };
+
+            return roles;
         }
 
         private IEnumerable<Restaurant> CreateRestaurant()
