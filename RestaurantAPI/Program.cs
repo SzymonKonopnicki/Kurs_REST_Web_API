@@ -5,6 +5,11 @@ using NLog;
 using NLog.Web;
 using RestaurantAPI.Middleware;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using FluentValidation;
+using RestaurantAPI.Models.Dtos;
+using RestaurantAPI.Models.Validators;
+using FluentValidation.AspNetCore;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -16,7 +21,7 @@ try
 
     // Add services to the container.
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddFluentValidation();
     builder.Services.AddDbContext<RestaurantDbContext>();
     builder.Services.AddScoped<RestaurantSeeds>();
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -25,6 +30,9 @@ try
     builder.Services.AddScoped<RequestTimeMiddleware>();
     builder.Services.AddScoped<Stopwatch>();
     builder.Services.AddScoped<IDishServices, DishServices>();
+    builder.Services.AddScoped<IAccountService, AccountService>();
+    builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+    builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
