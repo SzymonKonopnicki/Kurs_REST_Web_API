@@ -10,6 +10,9 @@ using FluentValidation;
 using RestaurantAPI.Models.Dtos;
 using RestaurantAPI.Models.Validators;
 using FluentValidation.AspNetCore;
+using Azure.Core.Pipeline;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -20,6 +23,28 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
+
+    var authenticationSettings = new AuthenticationSettings();
+
+    builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+    builder.Services.AddAuthentication(opt =>
+    {
+        opt.DefaultAuthenticateScheme = "Bearer";
+        opt.DefaultScheme = "Bearer";
+        opt.DefaultChallengeScheme = "Bearer";
+    }).AddJwtBearer(config =>
+    {
+        config.RequireHttpsMetadata = false;
+        config.SaveToken = true;
+        config.TokenValidationParameters = new TokenValidationParameters
+        {
+            
+            ValidIssuer = authenticationSettings.JwtIssuer,
+            ValidAudience = authenticationSettings.JwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+        };
+    });
 
     builder.Services.AddControllers().AddFluentValidation();
     builder.Services.AddDbContext<RestaurantDbContext>();
@@ -57,7 +82,7 @@ try
     }
     app.UseMiddleware<ErrorMiddleware>();
     app.UseMiddleware<RequestTimeMiddleware>();
-
+    app.UseAuthentication();
     app.UseHttpsRedirection();
 
     app.MapControllers();
