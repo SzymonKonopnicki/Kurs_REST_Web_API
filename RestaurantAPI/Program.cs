@@ -39,10 +39,9 @@ try
         config.SaveToken = true;
         config.TokenValidationParameters = new TokenValidationParameters
         {
-            
             ValidIssuer = authenticationSettings.JwtIssuer,
             ValidAudience = authenticationSettings.JwtIssuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(authenticationSettings.JwtKey)),
         };
     });
 
@@ -82,9 +81,11 @@ try
     }
     app.UseMiddleware<ErrorMiddleware>();
     app.UseMiddleware<RequestTimeMiddleware>();
-    app.UseAuthentication();
-    app.UseHttpsRedirection();
 
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.UseHttpsRedirection();
     app.MapControllers();
 
     app.Run();

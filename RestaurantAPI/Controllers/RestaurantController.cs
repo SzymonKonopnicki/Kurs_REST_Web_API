@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace RestaurantAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RestaurantController : ControllerBase
     {
         private IRestaurantServices _restaurantServices;
@@ -23,6 +25,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<RestaurantDto>> GetAllRestaurants()
         {
             var restaurantsDto = _restaurantServices.GetAll();
@@ -33,6 +36,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("{id}")]
         public ActionResult<RestaurantDto> GetRestaurantById([FromRoute] int id)
         {
