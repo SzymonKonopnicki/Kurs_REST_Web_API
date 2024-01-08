@@ -13,6 +13,8 @@ using FluentValidation.AspNetCore;
 using Azure.Core.Pipeline;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using RestaurantAPI.Authorization;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -46,6 +48,7 @@ try
     });
 
     builder.Services.AddControllers().AddFluentValidation();
+    builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
     builder.Services.AddDbContext<RestaurantDbContext>();
     builder.Services.AddScoped<RestaurantSeeds>();
     builder.Services.AddAutoMapper(typeof(Program).Assembly);

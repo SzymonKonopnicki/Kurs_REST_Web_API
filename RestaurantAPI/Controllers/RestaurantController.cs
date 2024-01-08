@@ -8,6 +8,7 @@ using RestaurantAPI.Entities;
 using RestaurantAPI.Interfaces;
 using RestaurantAPI.Models.Dtos;
 using RestaurantAPI.Services;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Controllers
 {
@@ -50,7 +51,8 @@ namespace RestaurantAPI.Controllers
         [HttpPost]
         public ActionResult<IEnumerable<RestaurantDto>> CreateRestaurants([FromBody] RestaurantCreateDto restaurantCreateDto)
         {
-            int id = _restaurantServices.Create(restaurantCreateDto);
+            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            int id = _restaurantServices.Create(restaurantCreateDto, userId);
 
             _logger.LogInformation($"Create restauration with Id:{id}");
             return Created($"api/Restaurant/{id}", null);
@@ -59,6 +61,7 @@ namespace RestaurantAPI.Controllers
         [HttpDelete]
         public ActionResult DeleteRestaurant([FromBody] string name)
         {
+            _restaurantServices.Delete(name, User);
             _logger.LogWarning($"Delete restauration with Name:{name}");
             return NoContent();
         }
@@ -67,7 +70,7 @@ namespace RestaurantAPI.Controllers
         [Route("{id}")]
         public ActionResult UpdateRestaurant([FromRoute] int id, [FromBody] RestaurantUpdateDto updateRestaurantDto)
         {
-            _restaurantServices.Update(id, updateRestaurantDto);
+            _restaurantServices.Update(id, updateRestaurantDto, User);
 
             _logger.LogWarning($"Update restauration with Id:{id}");
             return Ok();
