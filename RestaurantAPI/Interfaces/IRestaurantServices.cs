@@ -7,8 +7,8 @@ namespace RestaurantAPI.Interfaces
     {
         IEnumerable<RestaurantDto> GetAll();
         RestaurantDto GetById(int id);
-        int Create(RestaurantCreateDto restaurantDto, int userId);
-        void Delete(string name, ClaimsPrincipal user);
-        void Update(int id, RestaurantUpdateDto updateRestaurantDto, ClaimsPrincipal user);
+        int Create(RestaurantCreateDto restaurantDto);
+        void Delete(string name);
+        void Update(int id, RestaurantUpdateDto updateRestaurantDto);
     }
 }

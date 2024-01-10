@@ -60,6 +60,8 @@ try
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
+    builder.Services.AddScoped<IUserContextServic, UserContextServic>();
+    builder.Services.AddHttpContextAccessor();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
