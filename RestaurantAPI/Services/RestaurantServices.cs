@@ -6,6 +6,7 @@ using RestaurantAPI.Authorization;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Exceptions;
 using RestaurantAPI.Interfaces;
+using RestaurantAPI.Models;
 using RestaurantAPI.Models.Dtos;
 using System.Security.Claims;
 
@@ -26,16 +27,23 @@ namespace RestaurantAPI.Services
             _userContextServic = userContextServic;
         }
 
-        public IEnumerable<RestaurantDto> GetAll()
+        public PagedResult<RestaurantDto> GetAll(RestaurantQuery query)
         {
-            var restaurants = _dbContext.Restaurants
+            var baseQuery = _dbContext.Restaurants
                 .Include(x => x.Address)
                 .Include(x => x.Dish)
+                .Where(x => query.SearchPhrase == null || (x.Name.ToLower().Contains(query.SearchPhrase.ToLower()) ||
+                                                x.Description.ToLower().Contains(query.SearchPhrase.ToLower())));
+            var restaurants = baseQuery
+                .Skip(query.PageSize * (query.PageNumber - 1))
+                .Take(query.PageSize)
                 .ToList();
 
             var restaurantsDto = _mapper.Map<List<RestaurantDto>>(restaurants);
 
-            return restaurantsDto;
+            var result = new PagedResult<RestaurantDto>(restaurantsDto, baseQuery.Count(), query.PageSize, query.PageNumber);
+
+            return result;
         }
         public RestaurantDto GetById(int id)
         {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Interfaces;
+using RestaurantAPI.Models;
 using RestaurantAPI.Models.Dtos;
 using RestaurantAPI.Services;
 using System.Security.Claims;
@@ -27,9 +28,9 @@ namespace RestaurantAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<RestaurantDto>> GetAllRestaurants()
+        public ActionResult<IEnumerable<RestaurantDto>> GetAllRestaurants([FromQuery] RestaurantQuery query)
         {
-            var restaurantsDto = _restaurantServices.GetAll();
+            var restaurantsDto = _restaurantServices.GetAll(query);
 
             _logger.LogInformation("Sending list of restaurations");
 

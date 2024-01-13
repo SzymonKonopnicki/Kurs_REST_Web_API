@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using RestaurantAPI.Authorization;
+using RestaurantAPI.Models;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -60,6 +61,7 @@ try
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
+    builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
     builder.Services.AddScoped<IUserContextServic, UserContextServic>();
     builder.Services.AddHttpContextAccessor();
 
