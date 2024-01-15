@@ -64,6 +64,10 @@ try
     builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
     builder.Services.AddScoped<IUserContextServic, UserContextServic>();
     builder.Services.AddHttpContextAccessor();
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("FronClient", x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["AllowedOrigins"]));
+    });
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
