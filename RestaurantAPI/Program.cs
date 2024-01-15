@@ -80,7 +80,7 @@ try
     builder.Host.UseNLog();
 
     var app = builder.Build();
-
+    app.UseResponseCaching();
     app.UseStaticFiles();
     app.UseCors("FronClient");
     var scope = app.Services.CreateScope();
