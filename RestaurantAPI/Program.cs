@@ -81,6 +81,8 @@ try
 
     var app = builder.Build();
 
+    app.UseStaticFiles();
+    app.UseCors("FronClient");
     var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<RestaurantSeeds>();
     seeder.Seeds();
